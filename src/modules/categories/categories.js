@@ -1,5 +1,5 @@
 import React from "react"
-class CategoriesContainer extends React.Component {
+class Categories extends React.Component {
   render() {
     return (
       <div>
@@ -9,4 +9,4 @@ class CategoriesContainer extends React.Component {
     )
   }
 }
-export default CategoriesContainer
+export default Categories

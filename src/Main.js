@@ -4,6 +4,8 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
+import Products from "./modules/products/products";
+import Categories from "./modules/categories/categories";
 
 class Main extends Component {
   render() {
@@ -19,7 +21,8 @@ class Main extends Component {
             <li><a href="/contact">Contact</a></li>
           </ul>
           <div className="content">
-
+            <Products/>
+            <Categories/>
           </div>
         </header>
     );
