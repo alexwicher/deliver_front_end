@@ -1,32 +1,27 @@
-import React, {Component} from 'react';
-import {apiUrl, getAllProducts} from "../../shared/api";
+import React, {useEffect} from 'react';
+import {apiUrl} from "../../shared/api";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProductList} from "../../shared/redux/actions/productListActions";
 
-class Products extends Component {
-    state = {
-        products: []
-    };
-
-    async componentDidMount() {
-        // TODO: componentDidMount NOT EXECUTING!!!
-        await getAllProducts().then(res => {
-            const products = res.data;
-            this.setState({products: products});
-        });
-    }
-
-    render() {
-        return (
-            <div>
-                {this.state.products.map(item => (
-                    <div>
-                        <h1>{item.name}</h1>
-                        <span>{item.price}</span>
-                        <img src={apiUrl + item.image} alt=""/>
-                    </div>
-                ))}
-            </div>
-        );
-    }
+function Products() {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchProductList());
+    },[]);
+    const productListData = useSelector(state => state.productListReducer);
+    return (
+        productListData.loading ? (<h2> Loading ... </h2>) :
+            productListData.error ? (<h2> {productListData.error} </h2>) : (
+                <div>
+                    {productListData.products.map(product => (
+                        <div>
+                            <h1>{product.name}</h1>
+                            <span>{product.price}</span>
+                            <img src={apiUrl + product.image} alt=""/>
+                        </div>
+                    ))}
+                </div>)
+    );
 }
 
 export default Products;

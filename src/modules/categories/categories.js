@@ -1,12 +1,25 @@
-import React from "react"
-class Categories extends React.Component {
-  render() {
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchCategoryList} from "../../shared/redux/actions/categoryListActions";
+
+function Categories() {
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchCategoryList());
+    }, []);
+    const categoryListData = useSelector(state => state.categoryListReducer);
     return (
-      <div>
-        <h1>Hello from Create React App</h1>
-        <p>I am in a React Component!</p>
-      </div>
-    )
-  }
+        categoryListData.loading ? (<h2> Loading ... </h2>) :
+            categoryListData.error ? (<h2> {categoryListData.error} </h2>) : (
+                <div>
+                    {categoryListData.categories.map(category => (
+                        <div>
+                            <h1>{category.name}</h1>
+                        </div>
+                    ))}
+                </div>
+            ));
 }
-export default Categories
+
+export default Categories;

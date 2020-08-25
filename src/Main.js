@@ -1,32 +1,27 @@
-import React, { Component } from "react";
-import {
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
+import React from "react";
 import Products from "./modules/products/products";
 import Categories from "./modules/categories/categories";
+import Cart from "./modules/cart/cart";
+import Header from "./modules/header/header";
+import Footer from "./modules/footer/footer";
+import {Provider} from 'react-redux';
+import {store} from "./shared/redux/store";
 
-class Main extends Component {
-  render() {
+function Main() {
     return (
-        <header>
-          <h1>Simple SPA</h1>
-          <ul className="header">
-            <li><a href="/">Home</a></li>
-            <li><a href="/cart">Cart</a></li>
-            <li><a href="/logout">Logout</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-          <div className="content">
-            <Products/>
-            <Categories/>
-          </div>
-        </header>
+        <Provider store={store}>
+            <div>
+                <Header/>
+                <Cart/>
+                <div className="content">
+                    <h1>Simple SPA</h1>
+                    <Products/>
+                    <Categories/>
+                </div>
+                <Footer/>
+            </div>
+        </Provider>
     );
-  }
 }
 
 export default Main;
