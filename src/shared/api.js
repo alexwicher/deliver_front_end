@@ -23,10 +23,27 @@ export function registerUser(username,password,email,re_password) {
     };
     return axios.post(apiUrl + '/auth/users/', data);
 }
-export function loginUser(username,password,email) {
+export function loginUser(username,password) {
     const data ={
         username:username,
         password:password,
     };
     return axios.post(apiUrl+'/auth/jwt/create/',data);
+}
+
+export function resetPassword(email) {
+    const data ={
+        email:email,
+    };
+    return axios.post(apiUrl+'/auth/users/reset_password/',data);
+}
+
+export function resetPasswordConfirm(uid,token,newPass,re_newPass) {
+    const data ={
+        uid:uid,
+        token:token,
+        new_password:newPass,
+        re_new_password:re_newPass
+    };
+    return axios.post(apiUrl+'/auth/users/reset_password_confirm/',data);
 }

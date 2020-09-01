@@ -9,7 +9,7 @@ import {persistReducer, persistStore} from 'redux-persist'
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['userloginReducer']
+    whitelist: ['userloginReducer'] //Only this reducers's states shall persist
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

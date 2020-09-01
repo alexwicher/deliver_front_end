@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Main from "./Main";
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
-import Notfound from "./modules/NotFound/notFound";
 import Contact from "./modules/contact/contact";
 import UserRegister from "./modules/user/register";
 import {Provider} from "react-redux";
 import {persistor, store} from "./shared/redux/store";
 import UserLogin from "./modules/user/login";
 import {PersistGate} from 'redux-persist/integration/react'
+import PasswordResetConfirm from "./modules/user/passwordResetConfirm";
+import Notfound from "./modules/NotFound/notFound";
 
 
 const routing = (
@@ -19,10 +20,11 @@ const routing = (
                     <hr/>
                     <Switch>
                         <Route exact path="/" component={Main}/>
-                        <Route path="/contact" component={Contact}/>
-                        <Route path="/user/register" component={UserRegister}/>
-                        <Route path="/user/logIn" component={UserLogin}/>
-                        <Route path="/user/logOut" component={Contact}/>
+                        <Route exact path="/contact" component={Contact}/>
+                        <Route exact path="/user/register" component={UserRegister}/>
+                        <Route exact path="/user/logIn" component={UserLogin}/>
+                        <Route exact path="/user/logOut" component={Contact}/>
+                        <Route exact path='/password/reset/confirm/:uid/:token' component={PasswordResetConfirm}/>
                         <Route component={Notfound}/>
                     </Switch>
                 </div>
