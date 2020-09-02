@@ -14,7 +14,7 @@ function UserLogin() {
     const [passwordResetForm, setPasswordResetForm] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [submittedReset, setSubmittedReset] = useState(false);
-    const loginStatus = useSelector(state => state.userloginReducer);
+    var loginStatus = useSelector(state => state.userloginReducer);
     const resetPassStat = useSelector(state => state.passwordResetReducer);
     const dispatch = useDispatch();
 
@@ -33,13 +33,14 @@ function UserLogin() {
 
         setSubmitted(true);
         if (user.username && user.password) {
+            loginStatus.error = []; //Clean previous persisted error state...
             dispatch(userLogin(user.username, user.password));
         }
     }
 
     function handleSubmitPassReset(e) {
-        setSubmittedReset(true);
         e.preventDefault();
+        setSubmittedReset(true);
         if (email) {
             dispatch(passwordReset(email));
         }
@@ -52,14 +53,14 @@ function UserLogin() {
 
     function handleMsgs() {
         var output = {};
-        if (loginStatus && loginStatus.error) {
+        if (submitted && loginStatus && loginStatus.error) {
             output = {
                 ...output,
                 error: [loginStatus.error.detail]
             }
         }
         if (passwordResetForm) {
-            if (resetPassStat && resetPassStat.error) {
+            if (submittedReset && resetPassStat && resetPassStat.error) {
                 output = {
                     ...output,
                     error: ["The server has failed to send a message to that email address."]

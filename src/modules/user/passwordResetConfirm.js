@@ -22,8 +22,8 @@ function PasswordResetConfirm(props) {
     }
 
     function handleSubmitPassConfirm(e) {
-        setSubmitted(true);
         e.preventDefault();
+        setSubmitted(true);
         if (passwords.password && passwords.re_password) {
             dispatch(passwordResetConfirm(params.uid, params.token, passwords.password, passwords.re_password));
         }
@@ -31,7 +31,7 @@ function PasswordResetConfirm(props) {
 
     function handleMsgs() {
         var output = {};
-        if (prcStatus && prcStatus.error) {
+        if (submitted && prcStatus && prcStatus.error) {
             var errors = prcStatus.error;
             output = {
                 ...output,

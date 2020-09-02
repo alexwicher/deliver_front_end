@@ -24,7 +24,6 @@ function UserRegister() {
 
     function handleSubmit(e) {
         e.preventDefault();
-
         setSubmitted(true);
         if (user.email && user.username && user.password && user.re_password) {
             dispatch(userRegister(user.username, user.password, user.email, user.re_password));
@@ -33,19 +32,13 @@ function UserRegister() {
 
     function handleMsgs() {
         var output = {};
-        if (status && status.error) {
+        if (submitted && status && status.error) {
             var errors = status.error;
             output = {
                 ...output,
                 error: concatAux(
                     concatAux(errors.password, errors.username), concatAux(errors.email, errors.non_field_errors)
                 )
-            }
-        }
-        if (status && status.user === user.username) {
-            output = {
-                ...output,
-                success: ["User " + status.user + " has been registered succesfully."]
             }
         }
         return output;

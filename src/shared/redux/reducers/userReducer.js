@@ -51,7 +51,7 @@ export const userloginReducer = (state = initialStateLogin, action) => {
             };
         case JWT_USER_LOGOUT:
             return {
-                ...state, accessToken: '', refreshToken: ''
+                ...state, accessToken: '', refreshToken: '', username: ''
             };
         default:
             return state;

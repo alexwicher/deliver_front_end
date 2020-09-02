@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Main from "./Main";
-import {HashRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Contact from "./modules/contact/contact";
 import UserRegister from "./modules/user/register";
 import {Provider} from "react-redux";
@@ -10,7 +10,6 @@ import UserLogin from "./modules/user/login";
 import {PersistGate} from 'redux-persist/integration/react'
 import PasswordResetConfirm from "./modules/user/passwordResetConfirm";
 import Notfound from "./modules/NotFound/notFound";
-
 
 const routing = (
     <Provider store={store}>
