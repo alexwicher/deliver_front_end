@@ -1,8 +1,17 @@
-import {FAIL_PRODUCT_LIST_ACTION, FILL_PRODUCT_LIST_ACTION, REQUEST_PRODUCT_LIST_ACTION} from "../actionTypes";
+import {
+    CATEGORY_FILTER_PRODUCT_LIST,
+    FAIL_PRODUCT_LIST_ACTION,
+    FILL_PRODUCT_LIST_ACTION,
+    REQUEST_PRODUCT_LIST_ACTION
+} from "../actionTypes";
 import {getAllProducts} from "../../api";
 
 export const requestProductList = () => {
     return {type: REQUEST_PRODUCT_LIST_ACTION};
+};
+export const filterProductListByCategory = (catID) => {
+    return {type: CATEGORY_FILTER_PRODUCT_LIST,
+            categoryID: catID};
 };
 export const fillProductList = (products) => {
     return {

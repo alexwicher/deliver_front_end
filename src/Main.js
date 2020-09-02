@@ -24,8 +24,8 @@ function Main() {
             <Cart/>
             <div className="content">
                 <h1>Simple SPA</h1>
-                <Products/>
                 <Categories/>
+                <Products/>
             </div>
             <Footer/>
         </div>
