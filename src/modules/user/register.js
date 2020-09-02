@@ -1,7 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useState} from "react";
 import {userRegister} from "../../shared/redux/actions/userActions";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import {concatAux} from "../../assets/auxiliaryFunctions";
+import MsgHandler from "../utils/msgHandler/msgHandler";
+import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 
 function UserRegister() {
     const [user, setUser] = useState({
@@ -28,17 +31,42 @@ function UserRegister() {
         }
     }
 
+    function handleMsgs() {
+        var output = {};
+        if (status && status.error) {
+            var errors = status.error;
+            output = {
+                ...output,
+                error: concatAux(
+                    concatAux(errors.password, errors.username), concatAux(errors.email, errors.non_field_errors)
+                )
+            }
+        }
+        if (status && status.user === user.username) {
+            output = {
+                ...output,
+                success: ["User " + status.user + " has been registered succesfully."]
+            }
+        }
+        return output;
+    }
+
+    function handleSuccess() {
+        if (submitted && status && status.user === user.username) {
+            const msg = "User " + status.user + " has been registered succesfully.";
+            dispatch(togglePopUp(msg));
+            return <Redirect to="/"/>
+        }
+    }
+
     return (
         <div className="col-lg-8 offset-lg-2">
-
             <h2>Register</h2>
-
             <div className="info_msg_container">
                 * Password must be more than 8 characters long. <br/>
                 * Password and username must not be similar. <br/>
                 * Password must not be too common (12345678,abcdefgh,etc.). <br/>
             </div>
-
             <form name="form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Username</label>
@@ -80,25 +108,9 @@ function UserRegister() {
                     </button>
                     <Link to="/" className="btn btn-link">Cancel</Link>
                 </div>
-
             </form>
-
-            <div className="feedback_msg_container">
-                {status && status.error &&
-                <div className="invalid-feedback">
-                    {status.error.password} <br/>
-                    {status.error.username} <br/>
-                    {status.error.email} <br/>
-                    {status.error.non_field_errors} <br/>
-                </div>
-                }
-                {status && submitted && status.user === user.username &&
-                <div className="invalid-feedback">
-                    User {status.user} has been registered succesfully.<br/>
-                </div>
-                }
-            </div>
-
+            <MsgHandler msgsList={handleMsgs()}/>
+            {handleSuccess()}
         </div>
     );
 }

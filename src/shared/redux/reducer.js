@@ -8,6 +8,7 @@ import {
     userloginReducer,
     userRegisterReducer
 } from "./reducers/userReducer";
+import {popUpReducer} from "./reducers/popUpReducer";
 
 export default combineReducers({
     cartReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
     userloginReducer,
     passwordResetReducer,
     passwordConfirmResetReducer,
+    popUpReducer,
 });

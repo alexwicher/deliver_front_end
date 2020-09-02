@@ -31,14 +31,20 @@ export const userRegisterReducer = (state = initialStateRegister, action) => {
     }
 };
 
-const initialStateLogin = {loading: false, accessToken: '', refreshToken: '', error: ''};
+const initialStateLogin = {loading: false, accessToken: '', refreshToken: '', error: '', username: ''};
 
 export const userloginReducer = (state = initialStateLogin, action) => {
     switch (action.type) {
         case REQUEST_USER_LOGIN:
             return {...state, loading: true};
         case SUCESS_USER_LOGIN:
-            return {...state, loading: false, accessToken: action.accessToken, refreshToken: action.refreshToken};
+            return {
+                ...state,
+                loading: false,
+                accessToken: action.accessToken,
+                refreshToken: action.refreshToken,
+                username: action.username
+            };
         case FAIL_USER_LOGIN:
             return {
                 ...state, loading: false, error: action.error
@@ -69,14 +75,14 @@ export const passwordResetReducer = (state = initialStatePasswordReset, action) 
     }
 };
 
-const initialStatePasswordConfirmReset = {loading: false, error: '',status:null};
+const initialStatePasswordConfirmReset = {loading: false, error: '', status: null};
 
 export const passwordConfirmResetReducer = (state = initialStatePasswordConfirmReset, action) => {
     switch (action.type) {
         case PASSWORD_CONFIRM_RESET_REQUEST:
             return {...state, loading: true};
         case PASSWORD_CONFIRM_RESET_SUCESS:
-            return {...state, loading: false,status:action.status};
+            return {...state, loading: false, status: action.status};
         case PASSWORD_CONFIRM_RESET_FAIL:
             return {
                 ...state, loading: false, error: action.error

@@ -3,12 +3,12 @@ import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCart} from "../../shared/redux/actions/cartActions";
 import {userLogOut} from "../../shared/redux/actions/userActions";
+import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 
 function Header() {
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.userloginReducer.accessToken);
+    const userState = useSelector(state => state.userloginReducer);
     return (
-
         <div>
             <header>
                 <nav>
@@ -16,11 +16,14 @@ function Header() {
                     </NavLink>
                     <NavLink activeClassName="active" to="/contact"> Contact
                     </NavLink>
-                    {!isLoggedIn && <NavLink activeClassName="active" to="/user/register"> Register
+                    {!userState.accessToken && <NavLink activeClassName="active" to="/user/register"> Register
                     </NavLink>}
-                    {!isLoggedIn && <NavLink activeClassName="active" to="/user/logIn"> Log-in
+                    {!userState.accessToken && <NavLink activeClassName="active" to="/user/logIn"> Log-in
                     </NavLink>}
-                    {isLoggedIn && <button onClick={() => dispatch(userLogOut())}>Log-Out</button>
+                    {userState.accessToken && <button onClick={() => {
+                        dispatch(togglePopUp("Bye bye " + userState.username + "!"));
+                        dispatch(userLogOut());
+                    }}>Log-Out</button>
                     }
                     <button onClick={() => dispatch(toggleCart())}>Cart</button>
                 </nav>

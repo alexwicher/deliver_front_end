@@ -1,7 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useState} from "react";
 import {passwordReset, userLogin} from "../../shared/redux/actions/userActions";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import MsgHandler from "../utils/msgHandler/msgHandler";
+import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 
 function UserLogin() {
     const [user, setUser] = useState({
@@ -48,8 +50,39 @@ function UserLogin() {
         setPasswordResetForm(!passwordResetForm);
     }
 
-    //TODO: add info and error message handler function to simplify code below ->
-    //TODO: and use it for register.js and passwordResetConfirm.js too ...
+    function handleMsgs() {
+        var output = {};
+        if (loginStatus && loginStatus.error) {
+            output = {
+                ...output,
+                error: [loginStatus.error.detail]
+            }
+        }
+        if (passwordResetForm) {
+            if (resetPassStat && resetPassStat.error) {
+                output = {
+                    ...output,
+                    error: ["The server has failed to send a message to that email address."]
+                }
+            }
+        }
+        return output;
+    }
+
+    function handleSuccess() {
+        if (loginStatus && submitted && loginStatus.accessToken !== '') {
+            const msg = "Welcome " + user.username + " you are now logged in!";
+            dispatch(togglePopUp(msg));
+            return <Redirect to="/"/>
+        }
+        if (submittedReset && passwordResetForm && resetPassStat && resetPassStat.status === 204) {
+            const msg = "We have sent the confirmation mail. Check your mail out and click the link to re-set your\n" +
+                " password.";
+            dispatch(togglePopUp(msg));
+            return <Redirect to="/"/>
+        }
+    }
+
     return (
         <div className="col-lg-8 offset-lg-2">
 
@@ -83,19 +116,6 @@ function UserLogin() {
 
             </form>
 
-            <div className="feedback_msg_container">
-                {loginStatus && loginStatus.error &&
-                <div className="invalid-feedback">
-                    {loginStatus.error.detail} <br/>
-                </div>
-                }
-                {loginStatus && submitted && loginStatus.accessToken !== '' &&
-                <div className="invalid-feedback">
-                    User {user.username} logged succesfully.<br/>
-                </div>
-                }
-            </div>
-
             <button onClick={togglePasswordResetForm}>Forgot password?</button>
 
             {passwordResetForm &&
@@ -115,19 +135,9 @@ function UserLogin() {
                         </button>
                     </div>
                 </form>
-                {resetPassStat && resetPassStat.status === 204 &&
-                <div className="invalid-feedback">
-                    We have sent the confirmation mail. Check your mail out and click the link to re-set the
-                    password.<br/>
-                </div>
-                }
-                {resetPassStat && resetPassStat.error &&
-                <div className="invalid-feedback">
-                    The server has failed to send a message to that email address.<br/>
-                </div>
-                }
             </div>}
-
+            <MsgHandler msgsList={handleMsgs()}/>
+            {handleSuccess()}
         </div>
     );
 }

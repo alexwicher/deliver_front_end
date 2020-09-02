@@ -1,6 +1,10 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {passwordResetConfirm} from "../../shared/redux/actions/userActions";
+import MsgHandler from "../utils/msgHandler/msgHandler";
+import {concatAux} from "../../assets/auxiliaryFunctions";
+import {togglePopUp} from "../../shared/redux/actions/popUpActions";
+import {Redirect} from "react-router-dom";
 
 function PasswordResetConfirm(props) {
     const [passwords, setPasswords] = useState({
@@ -22,6 +26,26 @@ function PasswordResetConfirm(props) {
         e.preventDefault();
         if (passwords.password && passwords.re_password) {
             dispatch(passwordResetConfirm(params.uid, params.token, passwords.password, passwords.re_password));
+        }
+    }
+
+    function handleMsgs() {
+        var output = {};
+        if (prcStatus && prcStatus.error) {
+            var errors = prcStatus.error;
+            output = {
+                ...output,
+                error: concatAux(concatAux(errors.token, errors.non_field_errors), errors.new_password)
+            }
+        }
+        return output;
+    }
+
+    function handleSuccess() {
+        if (submitted && prcStatus && prcStatus.status === 204) {
+            const msg = "Password resetted, try logging in!";
+            dispatch(togglePopUp(msg));
+            return <Redirect to="/"/>
         }
     }
 
@@ -54,17 +78,9 @@ function PasswordResetConfirm(props) {
                 </div>
             </form>
 
-            {prcStatus && prcStatus.status === 204 &&
-            <div className="invalid-feedback">
-                Password resetted!<br/>
-            </div>}
-            {prcStatus && prcStatus.error &&
-            <div className="invalid-feedback">
-                {prcStatus.error.token} <br/>
-                {prcStatus.error.non_field_errors} <br/>
-                {prcStatus.error.new_password} <br/>
-            </div>
-            }
+            <MsgHandler msgsList={handleMsgs()}/>
+            {handleSuccess()}
+
         </div>
     );
 
