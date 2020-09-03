@@ -9,6 +9,7 @@ import {
     userRegisterReducer
 } from "./reducers/userReducer";
 import {popUpReducer} from "./reducers/popUpReducer";
+import {orderReducer} from "./reducers/orderReducer";
 
 export default combineReducers({
     cartReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
     passwordResetReducer,
     passwordConfirmResetReducer,
     popUpReducer,
+    orderReducer,
 });

@@ -35,7 +35,7 @@ function PasswordResetConfirm(props) {
             var errors = prcStatus.error;
             output = {
                 ...output,
-                error: concatAux(concatAux(errors.token, errors.non_field_errors), errors.new_password)
+                danger: concatAux(concatAux(errors.token, errors.non_field_errors), errors.new_password)
             }
         }
         return output;

@@ -7,6 +7,7 @@ import Footer from "./modules/footer/footer";
 import Popup from "reactjs-popup";
 import {useDispatch, useSelector} from "react-redux";
 import {togglePopUp} from "./shared/redux/actions/popUpActions";
+import 'bootstrap/dist/css/bootstrap.css';
 
 function Main() {
     var popUpState = useSelector(s => s.popUpReducer);

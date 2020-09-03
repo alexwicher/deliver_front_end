@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleCart} from "../../shared/redux/actions/cartActions";
 import {userLogOut} from "../../shared/redux/actions/userActions";
 import {togglePopUp} from "../../shared/redux/actions/popUpActions";
+import Button from "react-bootstrap/Button";
 
 function Header() {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function Header() {
                         dispatch(userLogOut());
                     }}>Log-Out</button>
                     }
-                    <button onClick={() => dispatch(toggleCart())}>Cart</button>
+                    <Button variant="link" onClick={() => dispatch(toggleCart())}>Cart</Button>
                 </nav>
             </header>
         </div>

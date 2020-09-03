@@ -36,7 +36,7 @@ function UserRegister() {
             var errors = status.error;
             output = {
                 ...output,
-                error: concatAux(
+                danger: concatAux(
                     concatAux(errors.password, errors.username), concatAux(errors.email, errors.non_field_errors)
                 )
             }

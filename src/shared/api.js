@@ -47,3 +47,11 @@ export function resetPasswordConfirm(uid,token,newPass,re_newPass) {
     };
     return axios.post(apiUrl+'/auth/users/reset_password_confirm/',data);
 }
+
+export function createOrderRequest(uid,orderItems) {
+    const data ={
+        uid:uid,
+        orderItems:orderItems,
+    };
+    return axios.post(apiUrl+'/order/create/',data);
+}

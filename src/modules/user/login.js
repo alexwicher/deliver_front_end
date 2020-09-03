@@ -56,14 +56,14 @@ function UserLogin() {
         if (submitted && loginStatus && loginStatus.error) {
             output = {
                 ...output,
-                error: [loginStatus.error.detail]
+                danger: [loginStatus.error.detail]
             }
         }
         if (passwordResetForm) {
             if (submittedReset && resetPassStat && resetPassStat.error) {
                 output = {
                     ...output,
-                    error: ["The server has failed to send a message to that email address."]
+                    danger: ["The server has failed to send a message to that email address."]
                 }
             }
         }
