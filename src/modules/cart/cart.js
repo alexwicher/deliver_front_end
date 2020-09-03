@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "../cart/cart.css";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Table} from "react-bootstrap";
-import {removeItemFromCart, setItemQuantity} from "../../shared/redux/actions/cartActions";
+import {removeItemFromCart, setItemQuantity, toggleCart} from "../../shared/redux/actions/cartActions";
 import {AiOutlineClose} from "react-icons/all";
 import {createOrder} from "../../shared/redux/actions/orderActions";
 import MsgHandler from "../utils/msgHandler/msgHandler";
@@ -23,6 +23,9 @@ function Cart() {
 
     function deleteItem(prodID) {
         dispatch(removeItemFromCart(prodID));
+        if (!Object.keys(cartStatus.orderItems).length){
+            dispatch(toggleCart());
+        }
     }
 
     function changeItemQuantity(e, prodID) {
@@ -67,7 +70,9 @@ function Cart() {
                                 <input type="number" size="2" value={item.quantity}
                                        onChange={(e) => changeItemQuantity(e, item.product.id)}/>
                             </td>
-                            <td>{"$" + Number(item.totalCost).toFixed(2)}</td>
+                            <td>
+                                {"$" + Number(item.totalCost).toFixed(2)}
+                            </td>
                             <td onClick={() => deleteItem(item.product.id)}>
                                 <AiOutlineClose size={24} color="grey"/>
                             </td>
