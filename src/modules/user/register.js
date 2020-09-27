@@ -14,7 +14,7 @@ function UserRegister() {
         re_password: '',
     });
     const [submitted, setSubmitted] = useState(false);
-    const status = useSelector(state => state.userRegisterReducer);
+    const registerStatus = useSelector(state => state.userRegisterReducer);
     const dispatch = useDispatch();
 
     function handleChange(e) {
@@ -32,8 +32,8 @@ function UserRegister() {
 
     function handleMsgs() {
         var output = {};
-        if (submitted && status && status.error) {
-            var errors = status.error;
+        if (submitted && registerStatus && registerStatus.error && !registerStatus.loading) {
+            var errors = registerStatus.error;
             output = {
                 ...output,
                 danger: concatAux(
@@ -45,8 +45,8 @@ function UserRegister() {
     }
 
     function handleSuccess() {
-        if (submitted && status && status.user === user.username) {
-            const msg = "User " + status.user + " has been registered succesfully.";
+        if (submitted && registerStatus && registerStatus.user === user.username) {
+            const msg = "User " + registerStatus.user + " has been registered succesfully.";
             dispatch(togglePopUp(msg));
             return <Redirect to="/"/>
         }
@@ -95,8 +95,8 @@ function UserRegister() {
                 </div>
                 <div className="form-group">
                     <button className="btn btn-primary">
-                        {status && status.loading &&
-                        <span className="spinner-border spinner-border-sm mr-1">Loading ..</span>}
+                        {registerStatus && registerStatus.loading &&
+                        <span className="spinner-border spinner-border-sm mr-1"/>}
                         Register
                     </button>
                     <Link to="/" className="btn btn-link">Cancel</Link>

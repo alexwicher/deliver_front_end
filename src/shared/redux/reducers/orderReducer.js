@@ -1,6 +1,6 @@
 import {CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCESS} from "../actionTypes";
 
-const initialState = {loading: false, error: '', order: ''};
+const initialState = {loading: false, error: '', order: 0};
 
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {

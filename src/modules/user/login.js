@@ -4,6 +4,7 @@ import {passwordReset, userLogin} from "../../shared/redux/actions/userActions";
 import {Link, Redirect} from "react-router-dom";
 import MsgHandler from "../utils/msgHandler/msgHandler";
 import {togglePopUp} from "../../shared/redux/actions/popUpActions";
+import PopUpMsg from "../utils/PopMsg/popUpMsg";
 
 function UserLogin() {
     const [user, setUser] = useState({
@@ -53,14 +54,14 @@ function UserLogin() {
 
     function handleMsgs() {
         var output = {};
-        if (submitted && loginStatus && loginStatus.error) {
+        if (submitted && loginStatus && loginStatus.error && !loginStatus.loading) {
             output = {
                 ...output,
                 danger: [loginStatus.error.detail]
             }
         }
         if (passwordResetForm) {
-            if (submittedReset && resetPassStat && resetPassStat.error) {
+            if (submittedReset && resetPassStat && resetPassStat.error && !loginStatus.loading) {
                 output = {
                     ...output,
                     danger: ["The server has failed to send a message to that email address."]
@@ -109,7 +110,7 @@ function UserLogin() {
                 <div className="form-group">
                     <button className="btn btn-primary">
                         {loginStatus && loginStatus.loading &&
-                        <span className="spinner-border spinner-border-sm mr-1">Loading ..</span>}
+                        <span className="spinner-border spinner-border-sm mr-1"/>}
                         Log-In
                     </button>
                     <Link to="/" className="btn btn-link">Cancel</Link>
@@ -139,6 +140,7 @@ function UserLogin() {
             </div>}
             <MsgHandler msgsList={handleMsgs()}/>
             {handleSuccess()}
+            <PopUpMsg/>
         </div>
     );
 }

@@ -1,9 +1,17 @@
-import {ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, SET_ITEM_QUANTITY, TOGGLE_CART_ACTION} from "../actionTypes";
+import {
+    ADD_ITEM_TO_CART,
+    EMPTY_CART,
+    REMOVE_ITEM_FROM_CART,
+    SET_ITEM_QUANTITY,
+    TOGGLE_CART_ACTION
+} from "../actionTypes";
 
 export const cartReducer = (state = {visible: false, orderItems: {}}, action) => {
     switch (action.type) {
         case TOGGLE_CART_ACTION:
             return {...state, visible: !state.visible};
+        case EMPTY_CART:
+            return {...state, orderItems: {}};
         case ADD_ITEM_TO_CART:
             state.orderItems[action.product.id] = {
                 product: action.product,

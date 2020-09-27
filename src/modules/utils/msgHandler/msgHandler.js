@@ -1,7 +1,7 @@
 import React from "react";
 import {Alert} from "react-bootstrap";
 
-function MsgHandler(input) {
+export default function MsgHandler(input) {
     var msgsList = input.msgsList;
     return (
         <div className="messageContainer">
@@ -23,5 +23,3 @@ function MsgHandler(input) {
   'info',
   'light',
   'dark',*/
-
-export default MsgHandler;

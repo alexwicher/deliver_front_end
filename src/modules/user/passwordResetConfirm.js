@@ -31,7 +31,7 @@ function PasswordResetConfirm(props) {
 
     function handleMsgs() {
         var output = {};
-        if (submitted && prcStatus && prcStatus.error) {
+        if (submitted && prcStatus && prcStatus.error && !prcStatus.loading) {
             var errors = prcStatus.error;
             output = {
                 ...output,

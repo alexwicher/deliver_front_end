@@ -17,10 +17,10 @@ export const failCreateOrder = (error) => {
     };
 };
 
-export const createOrder = (uid, orderItemList) => {
+export const createOrder = (uid, orderItemList,accessToken) => {
     return (dispatch) => {
         dispatch(requestCreateOrder());
-        createOrderRequest(uid, orderItemList).then(response => {
+        createOrderRequest(uid, orderItemList,accessToken).then(response => {
             const order = response.data;
             dispatch(successCreateOrder(order));
         }).catch(error => {

@@ -1,8 +1,13 @@
-import {ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, SET_ITEM_QUANTITY, TOGGLE_CART_ACTION} from "../actionTypes";
+import {EMPTY_CART,ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, SET_ITEM_QUANTITY, TOGGLE_CART_ACTION} from "../actionTypes";
 
 export const toggleCart = () => {
     return {type: TOGGLE_CART_ACTION};
 };
+
+export const emptyCart = () => {
+    return {type: EMPTY_CART};
+};
+
 export const addItemToCart = (product) => {
     return {
         type: ADD_ITEM_TO_CART,
