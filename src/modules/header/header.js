@@ -21,6 +21,8 @@ function Header() {
                     </NavLink>}
                     {!userState.accessToken && <NavLink activeClassName="active" to="/user/logIn"> Log-in
                     </NavLink>}
+                    {userState.accessToken && <NavLink activeClassName="active" to={"/user/"+userState.uid}> Profile
+                    </NavLink>}
                     {userState.accessToken && <button onClick={() => {
                         dispatch(togglePopUp("Bye bye " + userState.username + "!"));
                         dispatch(userLogOut());

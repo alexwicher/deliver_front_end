@@ -31,7 +31,7 @@ export const userRegisterReducer = (state = initialStateRegister, action) => {
     }
 };
 
-const initialStateLogin = {loading: false, accessToken: '', refreshToken: '', error: '', username: ''};
+const initialStateLogin = {loading: false, accessToken: '', refreshToken: '', error: '', username: '',uid:0};
 
 export const userloginReducer = (state = initialStateLogin, action) => {
     switch (action.type) {
@@ -43,7 +43,8 @@ export const userloginReducer = (state = initialStateLogin, action) => {
                 loading: false,
                 accessToken: action.accessToken,
                 refreshToken: action.refreshToken,
-                username: action.username
+                username: action.username,
+                uid: action.uid
             };
         case FAIL_USER_LOGIN:
             return {
@@ -51,7 +52,7 @@ export const userloginReducer = (state = initialStateLogin, action) => {
             };
         case JWT_USER_LOGOUT:
             return {
-                ...state, accessToken: '', refreshToken: '', username: ''
+                ...state, accessToken: '', refreshToken: '', username: '', uid: 0
             };
         default:
             return state;

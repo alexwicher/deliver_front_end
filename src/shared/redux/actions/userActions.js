@@ -53,12 +53,13 @@ export const userRegister = (username, password, email, re_password) => {
 export const requestUserLogin = () => {
     return {type: REQUEST_USER_LOGIN};
 };
-export const sucessUserLogin = (accessToken, refreshToken,username) => {
+export const sucessUserLogin = (accessToken, refreshToken,username,uid) => {
     return {
         type: SUCESS_USER_LOGIN,
         username:username,
         accessToken: accessToken,
         refreshToken: refreshToken,
+        uid: uid
     };
 };
 export const failUserLogin = (error) => {
@@ -77,7 +78,7 @@ export const userLogin = (username, password) => {
     return (dispatch) => {
         dispatch(requestUserLogin());
         loginUser(username, password).then(response => {
-            dispatch(sucessUserLogin(response.data.access, response.data.refresh,username));
+            dispatch(sucessUserLogin(response.data.access, response.data.refresh,username,response.data.uid));
         }).catch(error => {
                 dispatch(failUserLogin(error.response.data))
             }

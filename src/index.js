@@ -10,6 +10,7 @@ import UserLogin from "./modules/user/login";
 import {PersistGate} from 'redux-persist/integration/react'
 import PasswordResetConfirm from "./modules/user/passwordResetConfirm";
 import Notfound from "./modules/NotFound/notFound";
+import Profile from "./modules/user/profile";
 
 const routing = (
     <Provider store={store}>
@@ -22,8 +23,8 @@ const routing = (
                         <Route exact path="/contact" component={Contact}/>
                         <Route exact path="/user/register" component={UserRegister}/>
                         <Route exact path="/user/logIn" component={UserLogin}/>
-                        <Route exact path="/user/logOut" component={Contact}/>
                         <Route exact path='/password/reset/confirm/:uid/:token' component={PasswordResetConfirm}/>
+                        <Route exact path='/user/:uid' component={Profile}/>
                         <Route component={Notfound}/>
                     </Switch>
                 </div>
