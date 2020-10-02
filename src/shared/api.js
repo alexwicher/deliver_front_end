@@ -60,3 +60,62 @@ export function createOrderRequest(orderItems, accessToken) {
     };
     return axios.post(apiUrl + '/order/create/', data, {headers: authHeader});
 }
+
+export function loggedResetPasswordConfirm(pass, new_pass, re_new_pass, accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    const data = {
+        current_password: pass,
+        new_password: new_pass,
+        re_new_password: re_new_pass,
+    };
+    return axios.post(apiUrl + '/users/set_password/', data, {headers: authHeader});
+}
+
+export function changeUsernameRequest(new_username, accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    const data = {
+        username: new_username
+    };
+    return axios.post(apiUrl + '/users/reset_username/', data, {headers: authHeader});
+}
+
+export function changeEmailRequest(email, accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    const data = {
+        email: email
+    };
+    return axios.post(apiUrl + '/users/reset_email/', data, {headers: authHeader});
+}
+
+export function addDirectionRequest(direction, accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    const data = {
+        direction: direction //string
+    };
+    return axios.post(apiUrl + '/directions/add/', data, {headers: authHeader});
+}
+
+export function getDirectionsRequest(accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    return axios.get(apiUrl + '/directions/', {headers: authHeader});
+}
+
+export function deleteDirectionRequest(dirId, accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    const data = {
+        dirId: dirId
+    };
+    return axios.post(apiUrl + '/directions/delete/', data, {headers: authHeader});
+}

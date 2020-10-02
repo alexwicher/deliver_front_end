@@ -1,7 +1,9 @@
 import {
+    EMAIL_RESET_FAIL, EMAIL_RESET_REQUEST,
+    EMAIL_RESET_SUCESS,
     FAIL_USER_LOGIN,
     FAIL_USER_REGISTER,
-    JWT_USER_LOGOUT,
+    JWT_USER_LOGOUT, LOGGED_PASSWORD_RESET_FAIL, LOGGED_PASSWORD_RESET_REQUEST, LOGGED_PASSWORD_RESET_SUCESS,
     PASSWORD_CONFIRM_RESET_FAIL,
     PASSWORD_CONFIRM_RESET_REQUEST,
     PASSWORD_CONFIRM_RESET_SUCESS,
@@ -11,7 +13,7 @@ import {
     REQUEST_USER_LOGIN,
     REQUEST_USER_REGISTER,
     SUCESS_USER_LOGIN,
-    SUCESS_USER_REGISTER
+    SUCESS_USER_REGISTER, USERNAME_RESET_FAIL, USERNAME_RESET_REQUEST, USERNAME_RESET_SUCESS
 } from "../actionTypes";
 
 const initialStateRegister = {loading: false, user: [], error: ''};
@@ -85,6 +87,57 @@ export const passwordConfirmResetReducer = (state = initialStatePasswordConfirmR
         case PASSWORD_CONFIRM_RESET_SUCESS:
             return {...state, loading: false, status: action.status};
         case PASSWORD_CONFIRM_RESET_FAIL:
+            return {
+                ...state, loading: false, error: action.error
+            };
+        default:
+            return state;
+    }
+};
+
+const initialStateLoggedPasswordReset = {loading: false, error: '', status: null};
+
+export const loggedPasswordResetReducer = (state = initialStateLoggedPasswordReset, action) => {
+    switch (action.type) {
+        case LOGGED_PASSWORD_RESET_REQUEST:
+            return {...state, loading: true};
+        case LOGGED_PASSWORD_RESET_SUCESS:
+            return {...state, loading: false, status: action.status};
+        case LOGGED_PASSWORD_RESET_FAIL:
+            return {
+                ...state, loading: false, error: action.error
+            };
+        default:
+            return state;
+    }
+};
+
+const initialStateChangeUsername = {loading: false, error: '', status: null};
+
+export const changeUsernameReducer = (state = initialStateChangeUsername, action) => {
+    switch (action.type) {
+        case USERNAME_RESET_REQUEST:
+            return {...state, loading: true};
+        case USERNAME_RESET_SUCESS:
+            return {...state, loading: false, status: action.status};
+        case USERNAME_RESET_FAIL:
+            return {
+                ...state, loading: false, error: action.error
+            };
+        default:
+            return state;
+    }
+};
+
+const initialStateChangeEmail = {loading: false, error: '', status: null};
+
+export const changeEmailReducer = (state = initialStateChangeEmail, action) => {
+    switch (action.type) {
+        case EMAIL_RESET_REQUEST:
+            return {...state, loading: true};
+        case EMAIL_RESET_SUCESS:
+            return {...state, loading: false, status: action.status};
+        case EMAIL_RESET_FAIL:
             return {
                 ...state, loading: false, error: action.error
             };

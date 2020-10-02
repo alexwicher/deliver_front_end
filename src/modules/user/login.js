@@ -5,6 +5,7 @@ import {Link, Redirect} from "react-router-dom";
 import MsgHandler from "../utils/msgHandler/msgHandler";
 import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 import PopUpMsg from "../utils/PopMsg/popUpMsg";
+import Button from "react-bootstrap/Button";
 
 function UserLogin() {
     const [user, setUser] = useState({
@@ -118,7 +119,7 @@ function UserLogin() {
 
             </form>
 
-            <button onClick={togglePasswordResetForm}>Forgot password?</button>
+            <Button onClick={togglePasswordResetForm}>Forgot password?</Button>
 
             {passwordResetForm &&
             <div className="resetPassword">
