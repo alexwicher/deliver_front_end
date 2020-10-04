@@ -17,16 +17,18 @@ export default function Profile() {
     var directionsArray = [];
     const dispatch = useDispatch();
     const [directionAdd, setDirectionAdd] = useState('');
+    const [toDelete, setToDelete] = useState(0);
 
     useEffect(() => {
         dispatch(getDirections(loginStatus.accessToken));
     }, [dispatch]);
 
     for (const key in directionStatus.directions) {
-        directionsArray.push(directionStatus.directions[key]);
+        directionsArray.push({id: key, address: directionStatus.directions[key]});
     }
 
     function deleteDirectionButton(dirID) {
+        setToDelete(dirID);
         dispatch(deleteDirection(dirID, loginStatus.accessToken));
     }
 
@@ -103,7 +105,8 @@ export default function Profile() {
                         />
                         <InputGroup.Prepend>
                             <Button onClick={addDirectionButton} variant="outline-secondary">
-                                {directionStatus.loading && <span className="spinner-border spinner-border-sm mr-1"/>}
+                                {directionStatus.loading.add &&
+                                <span className="spinner-border spinner-border-sm mr-1"/>}
                                 Add Direction
                             </Button>
                         </InputGroup.Prepend>
@@ -113,11 +116,15 @@ export default function Profile() {
 
             <Table striped bordered hover size="sm">
                 <tbody>
+                {directionStatus.loading.get && <span className="spinner-border spinner-border-sm mr-1"/>}
                 {directionsArray.map(dir => (
                     <tr>
                         <td>{dir.address}</td>
                         <td onClick={() => deleteDirectionButton(dir.id)}>
-                            <AiOutlineClose size={24} color="grey"/>
+                            {toDelete === dir.id && directionStatus.loading.delete &&
+                            <span className="spinner-border spinner-border-sm mr-1"/>}
+                            {!(toDelete === dir.id && directionStatus.loading.delete) &&
+                            <AiOutlineClose size={24} color="grey"/>}
                         </td>
                     </tr>
                 ))}

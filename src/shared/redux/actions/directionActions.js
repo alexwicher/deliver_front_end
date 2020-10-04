@@ -34,7 +34,7 @@ export const addDirection = (direction, accessToken) => {
     return (dispatch) => {
         dispatch(requestAddDirection());
         addDirectionRequest(direction, accessToken).then(response => {
-            dispatch(sucessAddDirection({'id': response.data.dirId, 'direction': direction}, response.status));
+            dispatch(sucessAddDirection({id: response.data.dirId, address: direction}, response.status));
         }).catch(error => {
                 dispatch(failAddDirection(error.response.data))
             }
@@ -97,7 +97,6 @@ export const getDirections = (accessToken) => {
         dispatch(requestGetDirections());
         getDirectionsRequest(accessToken).then(response => {
             var addresses = response.data;
-            addresses = [i for i in response.data];
             dispatch(sucessGetDirections(addresses, response.status));
         }).catch(error => {
                 dispatch(failGetDirections(error.response.data))
