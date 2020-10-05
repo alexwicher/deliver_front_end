@@ -73,7 +73,7 @@ export function loggedResetPasswordConfirm(pass, new_pass, re_new_pass, accessTo
     return axios.post(apiUrl + '/auth/users/set_password/', data, {headers: authHeader});
 }
 
-export function changeUsernameRequest(new_username,pass, accessToken) {
+export function changeUsernameRequest(new_username, pass, accessToken) {
     const authHeader = {
         Authorization: "Bearer " + accessToken
     };
@@ -119,4 +119,11 @@ export function deleteDirectionRequest(dirId, accessToken) {
         dirId: dirId
     };
     return axios.post(apiUrl + '/directions/delete/', data, {headers: authHeader});
+}
+
+export function getOrdersRequest(accessToken) {
+    const authHeader = {
+        Authorization: "Bearer " + accessToken
+    };
+    return axios.get(apiUrl + '/order/', {headers: authHeader});
 }

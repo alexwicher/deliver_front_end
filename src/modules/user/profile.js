@@ -13,9 +13,11 @@ import Row from "react-bootstrap/Row";
 import {changeEmail, changeUsername, passwordLoggedResetConfirm} from "../../shared/redux/actions/userActions";
 import PopUpMsg from "../utils/PopMsg/popUpMsg";
 import {togglePopUp} from "../../shared/redux/actions/popUpActions";
+import {getOrders} from "../../shared/redux/actions/orderActions";
 
 export default function Profile() {
     var loginStatus = useSelector(state => state.userloginReducer);
+    var ordersStatus = useSelector(state => state.orderReducer);
     const directionStatus = useSelector(state => state.directionReducer);
     const changeEmailStatus = useSelector(state => state.changeEmailReducer);
     const changeUsernameStatus = useSelector(state => state.changeUsernameReducer);
@@ -30,6 +32,7 @@ export default function Profile() {
 
     useEffect(() => {
         dispatch(getDirections(loginStatus.accessToken));
+        dispatch(getOrders(loginStatus.accessToken));
     }, [dispatch]);
 
     for (const key in directionStatus.directions) {
@@ -84,7 +87,7 @@ export default function Profile() {
     function changeUsernameSubmit(e) {
         if (usernameChange.username !== '') {
             setUsernameChange({...usernameChange, submitted: true});
-            dispatch(changeUsername(usernameChange.username,usernameChange.pass_user, loginStatus.accessToken));
+            dispatch(changeUsername(usernameChange.username, usernameChange.pass_user, loginStatus.accessToken));
         }
     }
 
@@ -221,6 +224,29 @@ export default function Profile() {
 
             <p>Orders</p>
 
+            <Table striped bordered hover size="sm">
+                <thead>
+                <tr>
+                    <th>Created</th>
+                    <th>Last change</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {ordersStatus.loading.get && <span className="spinner-border spinner-border-sm mr-1"/>}
+                {(ordersStatus.userOrders).map(order => (
+                    <tr>
+                        <td>{order.created}</td>
+                        <td>{order.updated}</td>
+                        <td>View order products</td>
+                        <td>{order.total}</td>
+                        <td>{order.paid}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </Table>
 
             <Footer/>
             <PopUpMsg/>

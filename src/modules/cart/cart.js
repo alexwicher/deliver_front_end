@@ -66,7 +66,7 @@ function Cart() {
 
     function handleMsgs() {
         var output = {};
-        if (submitted && orderStatus && orderStatus.error && !orderStatus.loading) {
+        if (submitted && orderStatus && orderStatus.error && !orderStatus.loading.create) {
             output = {
                 danger: [orderStatus.error.detail]
             }
@@ -112,7 +112,7 @@ function Cart() {
                     {redirectLogIn()}
                     {tableItems.length > 0 &&
                     <tr><Button variable="secondary" onClick={() => orderProducts()}>
-                        {orderStatus.loading &&
+                        {orderStatus.loading.create &&
                         <span className="spinner-border spinner-border-sm mr-1"/>}
                         Order products</Button></tr>}
                     </tfoot>
