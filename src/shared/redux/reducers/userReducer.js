@@ -1,9 +1,13 @@
 import {
-    EMAIL_RESET_FAIL, EMAIL_RESET_REQUEST,
+    EMAIL_RESET_FAIL,
+    EMAIL_RESET_REQUEST,
     EMAIL_RESET_SUCESS,
     FAIL_USER_LOGIN,
     FAIL_USER_REGISTER,
-    JWT_USER_LOGOUT, LOGGED_PASSWORD_RESET_FAIL, LOGGED_PASSWORD_RESET_REQUEST, LOGGED_PASSWORD_RESET_SUCESS,
+    JWT_USER_LOGOUT,
+    LOGGED_PASSWORD_RESET_FAIL,
+    LOGGED_PASSWORD_RESET_REQUEST,
+    LOGGED_PASSWORD_RESET_SUCESS,
     PASSWORD_CONFIRM_RESET_FAIL,
     PASSWORD_CONFIRM_RESET_REQUEST,
     PASSWORD_CONFIRM_RESET_SUCESS,
@@ -13,7 +17,10 @@ import {
     REQUEST_USER_LOGIN,
     REQUEST_USER_REGISTER,
     SUCESS_USER_LOGIN,
-    SUCESS_USER_REGISTER, USERNAME_RESET_FAIL, USERNAME_RESET_REQUEST, USERNAME_RESET_SUCESS
+    SUCESS_USER_REGISTER,
+    USERNAME_RESET_FAIL,
+    USERNAME_RESET_REQUEST,
+    USERNAME_RESET_SUCESS
 } from "../actionTypes";
 
 const initialStateRegister = {loading: false, user: [], error: ''};
@@ -33,7 +40,15 @@ export const userRegisterReducer = (state = initialStateRegister, action) => {
     }
 };
 
-const initialStateLogin = {loading: false, accessToken: '', refreshToken: '', error: '', username: '',uid:0};
+const initialStateLogin = {
+    loading: false,
+    accessToken: '',
+    refreshToken: '',
+    error: '',
+    username: '',
+    email: '',
+    uid: 0
+};
 
 export const userloginReducer = (state = initialStateLogin, action) => {
     switch (action.type) {
@@ -46,7 +61,8 @@ export const userloginReducer = (state = initialStateLogin, action) => {
                 accessToken: action.accessToken,
                 refreshToken: action.refreshToken,
                 username: action.username,
-                uid: action.uid
+                uid: action.uid,
+                email: action.email
             };
         case FAIL_USER_LOGIN:
             return {
@@ -56,6 +72,10 @@ export const userloginReducer = (state = initialStateLogin, action) => {
             return {
                 ...state, accessToken: '', refreshToken: '', username: '', uid: 0
             };
+        case EMAIL_RESET_SUCESS:
+            return {...state, email: action.email};
+        case USERNAME_RESET_SUCESS:
+            return {...state, username: action.username};
         default:
             return state;
     }

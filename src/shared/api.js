@@ -70,17 +70,18 @@ export function loggedResetPasswordConfirm(pass, new_pass, re_new_pass, accessTo
         new_password: new_pass,
         re_new_password: re_new_pass,
     };
-    return axios.post(apiUrl + '/users/set_password/', data, {headers: authHeader});
+    return axios.post(apiUrl + '/auth/users/set_password/', data, {headers: authHeader});
 }
 
-export function changeUsernameRequest(new_username, accessToken) {
+export function changeUsernameRequest(new_username,pass, accessToken) {
     const authHeader = {
         Authorization: "Bearer " + accessToken
     };
     const data = {
-        username: new_username
+        new_username: new_username,
+        current_password: pass
     };
-    return axios.post(apiUrl + '/users/reset_username/', data, {headers: authHeader});
+    return axios.post(apiUrl + '/auth/users/set_username/', data, {headers: authHeader});
 }
 
 export function changeEmailRequest(email, accessToken) {
@@ -88,9 +89,9 @@ export function changeEmailRequest(email, accessToken) {
         Authorization: "Bearer " + accessToken
     };
     const data = {
-        email: email
+        email: email,
     };
-    return axios.post(apiUrl + '/users/reset_email/', data, {headers: authHeader});
+    return axios.patch(apiUrl + '/auth/users/me/', data, {headers: authHeader});
 }
 
 export function addDirectionRequest(direction, accessToken) {

@@ -8,11 +8,15 @@ import {
     resetPasswordConfirm
 } from "../../api";
 import {
-    EMAIL_RESET_FAIL, EMAIL_RESET_REQUEST,
+    EMAIL_RESET_FAIL,
+    EMAIL_RESET_REQUEST,
     EMAIL_RESET_SUCESS,
     FAIL_USER_LOGIN,
     FAIL_USER_REGISTER,
-    JWT_USER_LOGOUT, LOGGED_PASSWORD_RESET_FAIL, LOGGED_PASSWORD_RESET_REQUEST, LOGGED_PASSWORD_RESET_SUCESS,
+    JWT_USER_LOGOUT,
+    LOGGED_PASSWORD_RESET_FAIL,
+    LOGGED_PASSWORD_RESET_REQUEST,
+    LOGGED_PASSWORD_RESET_SUCESS,
     PASSWORD_CONFIRM_RESET_FAIL,
     PASSWORD_CONFIRM_RESET_REQUEST,
     PASSWORD_CONFIRM_RESET_SUCESS,
@@ -22,7 +26,10 @@ import {
     REQUEST_USER_LOGIN,
     REQUEST_USER_REGISTER,
     SUCESS_USER_LOGIN,
-    SUCESS_USER_REGISTER, USERNAME_RESET_FAIL, USERNAME_RESET_REQUEST, USERNAME_RESET_SUCESS
+    SUCESS_USER_REGISTER,
+    USERNAME_RESET_FAIL,
+    USERNAME_RESET_REQUEST,
+    USERNAME_RESET_SUCESS
 } from "../actionTypes";
 
 // ---------------- Register ----------------
@@ -63,13 +70,14 @@ export const userRegister = (username, password, email, re_password) => {
 export const requestUserLogin = () => {
     return {type: REQUEST_USER_LOGIN};
 };
-export const sucessUserLogin = (accessToken, refreshToken, username, uid) => {
+export const sucessUserLogin = (accessToken, refreshToken, username, uid, email) => {
     return {
         type: SUCESS_USER_LOGIN,
         username: username,
         accessToken: accessToken,
         refreshToken: refreshToken,
-        uid: uid
+        uid: uid,
+        email: email
     };
 };
 export const failUserLogin = (error) => {
@@ -88,7 +96,7 @@ export const userLogin = (username, password) => {
     return (dispatch) => {
         dispatch(requestUserLogin());
         loginUser(username, password).then(response => {
-            dispatch(sucessUserLogin(response.data.access, response.data.refresh, username, response.data.uid));
+            dispatch(sucessUserLogin(response.data.access, response.data.refresh, username, response.data.uid, response.data.email));
         }).catch(error => {
                 dispatch(failUserLogin(error.response.data))
             }
@@ -195,10 +203,10 @@ export const sucessLoggedPasswordConfirm = (status) => {
     }
 };
 
-export const passwordLoggedResetConfirm = (pass, new_pass, re_new_pass,accessToken) => {
+export const passwordLoggedResetConfirm = (pass, new_pass, re_new_pass, accessToken) => {
     return (dispatch) => {
         dispatch(requestLoggedPasswordResetConfirm());
-        loggedResetPasswordConfirm(pass, new_pass, re_new_pass).then(response => {
+        loggedResetPasswordConfirm(pass, new_pass, re_new_pass, accessToken).then(response => {
             dispatch(sucessLoggedPasswordConfirm(response.status));
         }).catch(error => {
                 dispatch(failLoggedPasswordResetConfirm(error.response.data))
@@ -223,18 +231,19 @@ export const failChangeUsername = (error) => {
     };
 };
 
-export const sucessChangeUsername = (status) => {
+export const sucessChangeUsername = (status, username) => {
     return {
         type: USERNAME_RESET_SUCESS,
-        status: status
+        status: status,
+        username: username
     }
 };
 
-export const changeUsername = (username,accessToken) => {
+export const changeUsername = (username, pass, accessToken) => {
     return (dispatch) => {
         dispatch(requestChangeUsername());
-        changeUsernameRequest(username,accessToken).then(response => {
-            dispatch(sucessChangeUsername(response.status));
+        changeUsernameRequest(username, pass, accessToken).then(response => {
+            dispatch(sucessChangeUsername(response.status, username));
         }).catch(error => {
                 dispatch(failChangeUsername(error.response.data))
             }
@@ -258,18 +267,19 @@ export const failChangeEmail = (error) => {
     };
 };
 
-export const sucessChangeEmail = (status) => {
+export const sucessChangeEmail = (status, email) => {
     return {
         type: EMAIL_RESET_SUCESS,
-        status: status
+        status: status,
+        email: email
     }
 };
 
-export const changeEmail = (email,accessToken) => {
+export const changeEmail = (email, accessToken) => {
     return (dispatch) => {
         dispatch(requestChangeEmail());
-        changeEmailRequest(email,accessToken).then(response => {
-            dispatch(sucessChangeEmail(response.status));
+        changeEmailRequest(email, accessToken).then(response => {
+            dispatch(sucessChangeEmail(response.status, email));
         }).catch(error => {
                 dispatch(failChangeEmail(error.response.data))
             }

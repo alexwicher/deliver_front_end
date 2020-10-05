@@ -3,6 +3,7 @@ import {cartReducer} from './reducers/cartReducer';
 import {productListReducer} from "./reducers/productListReducer";
 import {categoryListReducer} from "./reducers/categoryListReducer";
 import {
+    changeEmailReducer, changeUsernameReducer, loggedPasswordResetReducer,
     passwordConfirmResetReducer,
     passwordResetReducer,
     userloginReducer,
@@ -23,4 +24,7 @@ export default combineReducers({
     passwordConfirmResetReducer,
     popUpReducer,
     orderReducer,
+    changeEmailReducer,
+    changeUsernameReducer,
+    loggedPasswordResetReducer,
 });

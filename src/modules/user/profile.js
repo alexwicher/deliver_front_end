@@ -10,13 +10,22 @@ import {AiOutlineClose} from "react-icons/all";
 import {addDirection, deleteDirection, getDirections} from "../../shared/redux/actions/directionActions";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import {changeEmail, changeUsername, passwordLoggedResetConfirm} from "../../shared/redux/actions/userActions";
+import PopUpMsg from "../utils/PopMsg/popUpMsg";
+import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 
 export default function Profile() {
     var loginStatus = useSelector(state => state.userloginReducer);
     const directionStatus = useSelector(state => state.directionReducer);
+    const changeEmailStatus = useSelector(state => state.changeEmailReducer);
+    const changeUsernameStatus = useSelector(state => state.changeUsernameReducer);
+    const changePasswordStatus = useSelector(state => state.loggedPasswordResetReducer);
     var directionsArray = [];
     const dispatch = useDispatch();
     const [directionAdd, setDirectionAdd] = useState('');
+    const [emailChange, setEmailChange] = useState({email: '', submitted: false});
+    const [usernameChange, setUsernameChange] = useState({pass_user: '', username: '', submitted: false});
+    const [passwordChange, setPasswordChange] = useState({re_new_pass: '', new_pass: '', pass: '', submitted: false});
     const [toDelete, setToDelete] = useState(0);
 
     useEffect(() => {
@@ -43,6 +52,60 @@ export default function Profile() {
         setDirectionAdd(value);
     }
 
+    function changeEmailOnChange(e) {
+        const {name, value} = e.target;
+        setEmailChange(email => ({...email, [name]: value}));
+    }
+
+    function changeUsernameOnChange(e) {
+        const {name, value} = e.target;
+        setUsernameChange(username => ({...username, [name]: value}));
+    }
+
+    function changePasswordOnChange(e) {
+        const {name, value} = e.target;
+        setPasswordChange(pass => ({...pass, [name]: value}));
+    }
+
+    function changePasswordSubmit(e) {
+        if (passwordChange.pass !== '' && passwordChange.new_pass !== '' && passwordChange.re_new_pass !== '') {
+            setPasswordChange({...passwordChange, submitted: true});
+            dispatch(passwordLoggedResetConfirm(passwordChange.pass, passwordChange.new_pass, passwordChange.re_new_pass, loginStatus.accessToken));
+        }
+    }
+
+    function changeEmailSubmit(e) {
+        if (emailChange.email !== '') {
+            setEmailChange({...emailChange, submitted: true});
+            dispatch(changeEmail(emailChange.email, loginStatus.accessToken));
+        }
+    }
+
+    function changeUsernameSubmit(e) {
+        if (usernameChange.username !== '') {
+            setUsernameChange({...usernameChange, submitted: true});
+            dispatch(changeUsername(usernameChange.username,usernameChange.pass_user, loginStatus.accessToken));
+        }
+    }
+
+    function handleSucess() {
+        if (!changeEmailStatus.loading && emailChange.submitted) {
+            setEmailChange({...emailChange, submitted: false});
+            const msg = "Email resetted succesfully to: " + loginStatus.email;
+            dispatch(togglePopUp(msg));
+        }
+        if (!changeUsernameStatus.loading && usernameChange.submitted) {
+            setUsernameChange({...usernameChange, submitted: false});
+            const msg = "Username resetted succesfully to: " + loginStatus.username;
+            dispatch(togglePopUp(msg));
+        }
+        if (!changePasswordStatus.loading && passwordChange.submitted) {
+            setPasswordChange({...passwordChange, submitted: false});
+            const msg = "Password succesfully changed";
+            dispatch(togglePopUp(msg));
+        }
+    }
+
     return (
         <div>
             <Header/>
@@ -52,9 +115,21 @@ export default function Profile() {
                 <FormControl
                     aria-describedby="basic-addon1"
                     placeholder={loginStatus.username}
+                    value={usernameChange.username}
+                    name='username'
+                    onChange={changeUsernameOnChange}
+                />
+                <FormControl
+                    aria-describedby="basic-addon1"
+                    placeholder="Type current password"
+                    type="password"
+                    name="pass_user"
+                    onChange={changeUsernameOnChange}
                 />
                 <InputGroup.Prepend>
-                    <Button variant="outline-secondary">Change Username</Button>
+                    <Button onClick={changeUsernameSubmit} variant="outline-secondary"> Change Username
+                        {changeUsernameStatus.loading && <span className="spinner-border spinner-border-sm mr-1"/>}
+                    </Button>
                 </InputGroup.Prepend>
             </InputGroup>
 
@@ -62,9 +137,14 @@ export default function Profile() {
                 <FormControl
                     aria-describedby="basic-addon1"
                     placeholder={loginStatus.email}
+                    value={emailChange.email}
+                    name='email'
+                    onChange={changeEmailOnChange}
                 />
                 <InputGroup.Prepend>
-                    <Button variant="outline-secondary">Change email</Button>
+                    <Button onClick={changeEmailSubmit} variant="outline-secondary"> Change email
+                        {changeEmailStatus.loading && <span className="spinner-border spinner-border-sm mr-1"/>}
+                    </Button>
                 </InputGroup.Prepend>
             </InputGroup>
 
@@ -74,19 +154,27 @@ export default function Profile() {
                     aria-describedby="basic-addon1"
                     placeholder="Type current password"
                     type="password"
+                    name="pass"
+                    onChange={changePasswordOnChange}
                 />
                 <FormControl
                     aria-describedby="basic-addon1"
                     placeholder="Type new password"
                     type="password"
+                    name="new_pass"
+                    onChange={changePasswordOnChange}
                 />
                 <FormControl
                     aria-describedby="basic-addon1"
-                    placeholder="Re-type new passowrd"
+                    placeholder="Re-type new passoword"
                     type="password"
+                    name="re_new_pass"
+                    onChange={changePasswordOnChange}
                 />
                 <InputGroup.Prepend>
-                    <Button variant="outline-secondary">Change password</Button>
+                    <Button onClick={changePasswordSubmit} variant="outline-secondary">Change password
+                        {changePasswordStatus.loading && <span className="spinner-border spinner-border-sm mr-1"/>}
+                    </Button>
                 </InputGroup.Prepend>
             </InputGroup>
 
@@ -135,6 +223,8 @@ export default function Profile() {
 
 
             <Footer/>
+            <PopUpMsg/>
+            {handleSucess()}
         </div>
     )
 }
