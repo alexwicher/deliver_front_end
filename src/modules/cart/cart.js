@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import "../cart/cart.css";
+import "./css/cart.css";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Table} from "react-bootstrap";
 import {emptyCart, removeItemFromCart, setItemQuantity, toggleCart} from "../../shared/redux/actions/cartActions";

@@ -23,10 +23,10 @@ function Header() {
                     </NavLink>}
                     {userState.accessToken && <NavLink activeClassName="active" to={"/user/"+userState.uid}> Profile
                     </NavLink>}
-                    {userState.accessToken && <button onClick={() => {
+                    {userState.accessToken &&  <Button variant="link" onClick={() => {
                         dispatch(togglePopUp("Bye bye " + userState.username + "!"));
                         dispatch(userLogOut());
-                    }}>Log-Out</button>
+                    }}>Log-Out</Button>
                     }
                     <Button variant="link" onClick={() => dispatch(toggleCart())}>Cart</Button>
                 </nav>

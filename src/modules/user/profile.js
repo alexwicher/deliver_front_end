@@ -14,15 +14,18 @@ import {changeEmail, changeUsername, passwordLoggedResetConfirm} from "../../sha
 import PopUpMsg from "../utils/PopMsg/popUpMsg";
 import {togglePopUp} from "../../shared/redux/actions/popUpActions";
 import {getOrders} from "../../shared/redux/actions/orderActions";
+import OrderDetails from "./subModules/orderDetails";
 
 export default function Profile() {
-    var loginStatus = useSelector(state => state.userloginReducer);
-    var ordersStatus = useSelector(state => state.orderReducer);
+    const loginStatus = useSelector(state => state.userloginReducer);
+    const ordersStatus = useSelector(state => state.orderReducer);
     const directionStatus = useSelector(state => state.directionReducer);
     const changeEmailStatus = useSelector(state => state.changeEmailReducer);
     const changeUsernameStatus = useSelector(state => state.changeUsernameReducer);
     const changePasswordStatus = useSelector(state => state.loggedPasswordResetReducer);
     var directionsArray = [];
+    var productsString = {};
+    const [details, setDetails] = useState({});
     const dispatch = useDispatch();
     const [directionAdd, setDirectionAdd] = useState('');
     const [emailChange, setEmailChange] = useState({email: '', submitted: false});
@@ -38,6 +41,18 @@ export default function Profile() {
     for (const key in directionStatus.directions) {
         directionsArray.push({id: key, address: directionStatus.directions[key]});
     }
+
+    (ordersStatus.userOrders).map(order => {
+            productsString[order.id] = "";
+            order.items.map(item => {
+                var string = " " + item.quantity + " " + item.product_name;
+                productsString[order.id] += string;
+            });
+            if (productsString[order.id].length > 32) {
+                productsString[order.id] = productsString[order.id].substr(0, 29) + "...";
+            }
+        }
+    );
 
     function deleteDirectionButton(dirID) {
         setToDelete(dirID);
@@ -237,13 +252,19 @@ export default function Profile() {
                 <tbody>
                 {ordersStatus.loading.get && <span className="spinner-border spinner-border-sm mr-1"/>}
                 {(ordersStatus.userOrders).map(order => (
-                    <tr>
-                        <td>{order.created}</td>
-                        <td>{order.updated}</td>
-                        <td>View order products</td>
-                        <td>{order.total}</td>
-                        <td>{order.paid}</td>
-                    </tr>
+                    <React.Fragment>
+                        <tr>
+                            <td>{order.created}</td>
+                            <td>{order.updated}</td>
+                            <td onClick={() => {
+                                setDetails(det => ({...det, [order.id]: !det[order.id]}));
+                            }}> {productsString[order.id]}
+                            </td>
+                            <td>{order.total}</td>
+                            <td>{order.paid}</td>
+                        </tr>
+                        {details[order.id] && <OrderDetails products={order.items}/>}
+                    </React.Fragment>
                 ))}
                 </tbody>
             </Table>
